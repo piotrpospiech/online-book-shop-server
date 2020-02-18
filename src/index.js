@@ -1,7 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const products = require('./Product');
+
 const app = express();
+
+app.use(express.urlencoded({ extended: true }));
+
+app.use('/products', products);
 
 const main = async () => {
   try {

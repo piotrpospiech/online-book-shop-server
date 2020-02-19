@@ -5,6 +5,7 @@ const helmet = require('helmet');
 
 const products = require('./Product');
 const users = require('./User');
+const auth = require('./User/auth');
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(helmet());
 
 app.use('/products', products);
 app.use('/users', users);
+app.use('/auth', auth);
 
 const main = async () => {
   try {

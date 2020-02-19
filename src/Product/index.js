@@ -1,28 +1,35 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
 
 const Product = require('./Product');
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+router.post('/', verifyToken, (req, res) => {
 
   const data = req.body;
 
   const slug = data.title.replace(' ', '-').toLowerCase();
   data.slug = slug;
 
-  try {
-    const product = new Product(data);
-    await product.save();
-
-    res.sendStatus(201);
-  }
-  catch (err) {
-    console.log(err);
-  }
+  jwt.verify(req.token, 'secretkey', async (err, _) => {
+    if (!err) {
+      try {
+        const product = new Product(data);
+        await product.save();
+        res.sendStatus(201);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
+    else {
+      res.send(403);
+    }
+  });
 });
 
-router.get('/', async (req, res) => {
+router.get('/', async (_, res) => {
 
   try {
     const products = await Product.find()
@@ -41,7 +48,7 @@ router.get('/:slug', async (req, res) => {
   const { slug } = req.params;
 
   try {
-    const products = await Product.findOne({ slug: slug })
+    const products = await Product.findOne({ slug })
       .select('title slug author price image description');
 
     res.status(200).send(products);
@@ -51,5 +58,17 @@ router.get('/:slug', async (req, res) => {
   }
 
 });
+
+function verifyToken(req, res, next) {
+  const bearerHeader = req.headers['authorization'];
+  if (bearerHeader) {
+    const bearerToken = bearerHeader.split(' ')[1];
+    req.token = bearerToken;
+    next();
+  }
+  else {
+    res.sendStatus(403);
+  }
+};
 
 module.exports = router;

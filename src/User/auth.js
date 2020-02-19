@@ -5,7 +5,7 @@ const User = require('./User');
 
 const router = express.Router();
 
-router.get('/login', async (req, res) => {
+router.post('/', async (req, res) => {
   const { username, password } = req.body;
 
   try {

@@ -12,7 +12,7 @@ router.get('/login', async (req, res) => {
     const user = await User.findOne({ username, password });
 
     if (user) {
-      jwt.sign({ user }, 'secretkey', { expiresIn: '30s' }, (_, token) => {
+      jwt.sign({ user }, process.env.SECRET_KEY, { expiresIn: '24h' }, (_, token) => {
         res.json({ token });
       });
     }

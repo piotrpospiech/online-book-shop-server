@@ -12,7 +12,7 @@ router.post('/', verifyToken, (req, res) => {
   const slug = data.title.replace(' ', '-').toLowerCase();
   data.slug = slug;
 
-  jwt.verify(req.token, 'secretkey', async (err, _) => {
+  jwt.verify(req.token, process.env.SECRET_KEY, async (err, _) => {
     if (!err) {
       try {
         const product = new Product(data);

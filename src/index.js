@@ -4,6 +4,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 
 const products = require('./Product');
+const users = require('./User');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(helmet());
 
 app.use('/products', products);
+app.use('/users', users);
 
 const main = async () => {
   try {

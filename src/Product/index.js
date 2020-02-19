@@ -11,8 +11,6 @@ router.post('/', async (req, res) => {
   const slug = data.title.replace(' ', '-').toLowerCase();
   data.slug = slug;
 
-  console.log(data);
-
   try {
     const product = new Product(data);
     await product.save();

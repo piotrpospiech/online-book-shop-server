@@ -5,6 +5,9 @@ const productSchema = new Schema({
     type: String,
     required: true
   },
+  slug: {
+    type: String,
+  },
   author: {
     type: String,
     required: true

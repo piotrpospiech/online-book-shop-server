@@ -1,4 +1,7 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+
+const verifyToken = require('../utils/verifyToken');
 
 const Order = require('./Order');
 const Product = require('../Product/Product');
@@ -34,17 +37,24 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+router.get('/', verifyToken, (req, res) => {
 
   const { completed } = req.query;
 
-  try {
-    const orders = await Order.find({ completed });
-    res.status(200).send(orders);
-  }
-  catch (err) {
-    console.log(err);
-  }
+  jwt.verify(req.token, process.env.SECRET_KEY, async (err, _) => {
+    if (!err) {
+      try {
+        const orders = await Order.find({ completed });
+        res.status(200).send(orders);
+      }
+      catch (err) {
+        console.log(err);
+      }
+    }
+    else {
+      res.send(403);
+    }
+  });
 
 });
 

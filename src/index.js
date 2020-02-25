@@ -2,16 +2,23 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
+const dotenv = require('dotenv');
 
 const products = require('./Product');
+const users = require('./User');
+const auth = require('./User/auth');
 
+dotenv.config();
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
+app.use(express.json());
 
 app.use('/products', products);
+app.use('/users', users);
+app.use('/auth', auth);
 
 const main = async () => {
   try {

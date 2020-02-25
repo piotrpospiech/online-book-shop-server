@@ -29,6 +29,10 @@ const orderSchema = new Schema({
     type: Boolean,
     default: false
   },
+  date: {
+    type: Date,
+    required: true
+  },
   billingDetails: {
     firstName: {
       type: String,
@@ -43,13 +47,11 @@ const orderSchema = new Schema({
       required: true,
     },
     address: {
-      streetAndHouseNumber: {
-        type: String,
-        required: true
-      },
-      apartment: {
-        type: String
-      }
+      type: String,
+      required: true
+    },
+    apartment: {
+      type: String
     },
     postcode: {
       type: String,

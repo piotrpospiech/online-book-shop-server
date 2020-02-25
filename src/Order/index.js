@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const moment = require('moment');
 
 const verifyToken = require('../utils/verifyToken');
 
@@ -21,10 +22,13 @@ router.post('/', async (req, res) => {
     total += product.price;
   }
 
+  const date = moment();
+
   const data = {
     products,
     total,
-    billingDetails
+    billingDetails,
+    date
   };
 
   try {
@@ -44,7 +48,8 @@ router.get('/', verifyToken, (req, res) => {
   jwt.verify(req.token, process.env.SECRET_KEY, async (err, _) => {
     if (!err) {
       try {
-        const orders = await Order.find({ completed });
+        const orders = await Order.find({ completed })
+          .sort({ date: 'desc' });
         res.status(200).send(orders);
       }
       catch (err) {

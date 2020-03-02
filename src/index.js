@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const products = require('./Product');
 const users = require('./User');
 const auth = require('./User/auth');
+const orders = require('./Order');
 
 dotenv.config();
 const app = express();
@@ -19,6 +20,8 @@ app.use(express.json());
 app.use('/products', products);
 app.use('/users', users);
 app.use('/auth', auth);
+app.use('/orders', orders);
+app.use('/orders', orders);
 
 const main = async () => {
   try {

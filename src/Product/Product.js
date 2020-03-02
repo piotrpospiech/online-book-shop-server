@@ -7,6 +7,7 @@ const productSchema = new Schema({
   },
   slug: {
     type: String,
+    required: true
   },
   author: {
     type: String,

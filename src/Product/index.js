@@ -1,6 +1,8 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 
+const verifyToken = require('../utils/verifyToken');
+
 const Product = require('./Product');
 
 const router = express.Router();
@@ -58,17 +60,5 @@ router.get('/:slug', async (req, res) => {
   }
 
 });
-
-function verifyToken(req, res, next) {
-  const bearerHeader = req.headers['authorization'];
-  if (bearerHeader) {
-    const bearerToken = bearerHeader.split(' ')[1];
-    req.token = bearerToken;
-    next();
-  }
-  else {
-    res.sendStatus(403);
-  }
-};
 
 module.exports = router;

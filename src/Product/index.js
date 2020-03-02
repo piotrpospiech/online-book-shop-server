@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 
 const verifyToken = require('../utils/verifyToken');
 
@@ -7,9 +8,37 @@ const Product = require('./Product');
 
 const router = express.Router();
 
-router.post('/', verifyToken, (req, res) => {
+const storage = multer.diskStorage({
+  destination: function(_, _, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb) {
+    const slug = req.body.title.replace(' ', '-').toLowerCase();
+    cb(null, slug + '-' + file.originalname);
+  }
+});
+
+const fileFilter = (_, file, cb) => {
+  if (file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  }
+  else {
+    cb (null, false);
+  }
+};
+
+const upload = multer({ 
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter
+});
+
+router.post('/', verifyToken, upload.single('file'), (req, res) => {
 
   const data = req.body;
+  data.image = `http://localhost:5000/${req.file.path}`;
 
   const slug = data.title.replace(' ', '-').toLowerCase();
   data.slug = slug;

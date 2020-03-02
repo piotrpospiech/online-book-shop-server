@@ -16,11 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 app.use('/products', products);
 app.use('/users', users);
 app.use('/auth', auth);
-app.use('/orders', orders);
 app.use('/orders', orders);
 
 const main = async () => {

@@ -16,17 +16,17 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
 app.use('/products', products);
 app.use('/users', users);
 app.use('/auth', auth);
 app.use('/orders', orders);
-app.use('/orders', orders);
 
 const main = async () => {
   try {
       console.log('Trying to connect with MongoDB...');
-      await mongoose.connect('mongodb://localhost:27017/shop', { useNewUrlParser: true, useUnifiedTopology: true });
+      await mongoose.connect('mongodb://localhost:27017/shop', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
       console.log('Connected to MongoDB...');
 
       const port = process.env.PORT || 5000;

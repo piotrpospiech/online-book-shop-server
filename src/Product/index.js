@@ -41,7 +41,7 @@ const upload = multer({
 router.post('/', verifyToken, upload.single('file'), (req, res) => {
 
   const data = req.body;
-  data.image = `http://localhost:5000/${req.file.path}`;
+  data.image = `${process.env.SERVER_URL}/${req.file.path}`;
 
   const slug = data.title.replace(' ', '-').toLowerCase();
   data.slug = slug;
@@ -75,7 +75,7 @@ router.put('/', verifyToken, upload.single('file'), (req, res) => {
 
   const { title, author, description, price } = req.body;
 
-  const image = req.file ? `http://localhost:5000/${req.file.path}` : null;
+  const image = req.file ? `${process.env.SERVER_URL}/${req.file.path}` : null;
 
   const slug = title.replace(' ', '-').toLowerCase();
 

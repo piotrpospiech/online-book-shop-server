@@ -24,9 +24,12 @@ app.use('/auth', auth);
 app.use('/orders', orders);
 
 const main = async () => {
+
+  const { DB_USER, DB_PASSWORD } = process.env;
+
   try {
       console.log('Trying to connect with MongoDB...');
-      await mongoose.connect('mongodb://localhost:27017/shop', { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
+      await mongoose.connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@basecluster-bfjfw.mongodb.net/shop`, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
       console.log('Connected to MongoDB...');
 
       const port = process.env.PORT || 5000;

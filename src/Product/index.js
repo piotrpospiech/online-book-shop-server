@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
   filename: function(req, file, cb) {
     const mimeTypeArr = file.mimetype.split('/');
     const type = mimeTypeArr[mimeTypeArr.length - 1];
-    const slug = req.body.title.replace(' ', '-').toLowerCase();
+    const slug = req.body.title.split(' ').join('-').toLowerCase();
     cb(null, slug + '.' + type);
   }
 });
@@ -43,7 +43,7 @@ router.post('/', verifyToken, upload.single('file'), (req, res) => {
   const data = req.body;
   data.image = `${process.env.SERVER_URL}/${req.file.path}`;
 
-  const slug = data.title.replace(' ', '-').toLowerCase();
+  const slug = data.title.split(' ').join('-').toLowerCase();
   data.slug = slug;
 
   jwt.verify(req.token, process.env.SECRET_KEY, async (err, _) => {
@@ -77,7 +77,7 @@ router.put('/', verifyToken, upload.single('file'), (req, res) => {
 
   const image = req.file ? `${process.env.SERVER_URL}/${req.file.path}` : null;
 
-  const slug = title.replace(' ', '-').toLowerCase();
+  const slug = title.split(' ').join('-').toLowerCase();
 
   jwt.verify(req.token, process.env.SECRET_KEY, async (err, _) => {
     if (!err) {
